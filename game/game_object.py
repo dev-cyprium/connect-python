@@ -1,5 +1,4 @@
 import pygame
-import json
 from random import randrange
 
 class GameObject(object):
@@ -50,17 +49,18 @@ class ClickableTile(GameObject):
 		pygame.draw.rect(surface, self.color, self.rect)
 		
 class Figure(GameObject):
-	def __init__(self, x, y):
+	def __init__(self, x, y, vertecies):
 		super().__init__(x, y)
 		color = (randrange(0,256), randrange(0,256), randrange(0,256))
 		self.tiles = []
-		self.tiles.append(ClickableTile(x, y, color))
-		self.tiles.append(ClickableTile(x + 50, y, color))
-		self.tiles.append(ClickableTile(x, y + 50, color))
 		
+		for vertex in vertecies:
+			self.tiles.append(ClickableTile(self.x + vertex[0] * ClickableTile.SIZE, self.y + vertex[1] * ClickableTile.SIZE, color))
+					
 		self.dragging = False
 		self.mouse_position = None
-	
+		
+		
 	def update(self):
 		if(self.dragging):
 			current_position = pygame.mouse.get_pos()

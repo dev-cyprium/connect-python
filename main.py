@@ -1,6 +1,7 @@
 import pygame
-from game.game_object import Grid, ClickableTile
+from game.game_object import Grid, Figure
 from game.event_dispatcher import EventDispatcher
+from game.figure_parser import FigureParser
 
 class Game(object):
 	
@@ -15,42 +16,37 @@ class Game(object):
 		self.dispatcher = EventDispatcher()
 		
 		self.grid = Grid(400 - 125, 300 - 125, 5)
-		
-		self.clickable = ClickableTile(400 - 135, 300 - 125)
-		self.clickable1 = ClickableTile(400 - 25, 300 - 80)
-		self.clickable2 = ClickableTile(400 - 25, 300 - 15)
-		self.clickable3 = ClickableTile(0, 300 - 125)
-		
-		# Add event listener to clickable tile
-		self.dispatcher.subscribe(self.clickable)
-		self.dispatcher.subscribe(self.clickable1)
-		self.dispatcher.subscribe(self.clickable2)
-		self.dispatcher.subscribe(self.clickable3)
-		
 		self.game_objects.append(self.grid)
-		self.game_objects.append(self.clickable)
-		self.game_objects.append(self.clickable1)
-		self.game_objects.append(self.clickable2)
-		self.game_objects.append(self.clickable3)
+		
+		# Load figures
+		self.figures = []
+		parser = FigureParser()
+		for figure in parser.parse_figure_file():
+			f = Figure(0, 0, figure['vertecies'])
+			self.figures.append( f )
+			self.dispatcher.subscribe( f )
+			self.game_objects.append( f )
+
+		
 		
 	def run(self):
 		while not self.done:
+			# Event listening
 			for event in pygame.event.get():
 				self.dispatcher.dispatch(event)
 				if event.type == pygame.QUIT:
 					self.done = True
+			
 			# Game update logic
-			self.clickable.update()
-			self.clickable1.update()
-			self.clickable2.update()
-			self.clickable3.update()
+			for obj in self.game_objects:
+				obj.update()
 			
 			# Game render the screen		
 			self.screen.fill((0, 0, 0))
 			for obj in self.game_objects:
 				obj.render(self.screen)
+				
 			self.clock.tick(60)
-			
 			pygame.display.flip()
 
 if __name__ == '__main__':

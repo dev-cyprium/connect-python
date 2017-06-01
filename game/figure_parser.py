@@ -2,7 +2,8 @@ import json
 
 class FigureParser(object):
 	def __init__(self):
-		self.file_path = '../res/layouts.json'
+		# TODO: fix this to not use relative path
+		self.file_path = './res/layouts.json'
 		
 	def parse_figure_file(self):
 		with open(self.file_path) as data_file:
