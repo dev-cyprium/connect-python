@@ -1,4 +1,5 @@
 import pygame
+from random import randrange
 from game.game_object import Grid, Figure
 from game.event_dispatcher import EventDispatcher
 from game.figure_parser import FigureParser
@@ -22,7 +23,7 @@ class Game(object):
 		self.figures = []
 		parser = FigureParser()
 		for figure in parser.parse_figure_file():
-			f = Figure(0, 0, figure['vertecies'])
+			f = Figure(randrange(50, 600), randrange(50, 400), figure['vertecies'])
 			self.figures.append( f )
 			self.dispatcher.subscribe( f )
 			self.game_objects.append( f )
