@@ -20,6 +20,7 @@ class GameScene(object):
 		self.dispatcher = EventDispatcher()
 		self.game_objects = []
 		self.grid = Grid(400 - 125, 300 - 125, 5, self)
+		self.dispatcher.subscribe(self.grid)
 		self.game_objects.append(self.grid)
 		
 		# Load figures
