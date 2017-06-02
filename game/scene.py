@@ -93,5 +93,7 @@ class GameScene(object):
 	def update(self):
 		for obj in self.game_objects:
 			obj.update()
-		
+	
+	def win(self):
+		print("You've won congratulations!")
 	

@@ -48,7 +48,7 @@ class Grid(GameObject):
 	def on_figure_release(self, figure):
 		if len(self.placers) == 0:
 			return
-		
+						
 		ocupied = False
 		for placer in self.placers:
 			if placer.ocupied:
@@ -64,6 +64,18 @@ class Grid(GameObject):
 			old_x = figure.pick_location[0]
 			old_y = figure.pick_location[1]
 			figure.move_to(old_x, old_y)
+			
+			
+		normal = 0
+		ocupied = 0
+		for tiles in self.tiles:
+			for tile in tiles:
+				if tile.ocupied: 
+					ocupied += 1
+				normal += 1
+		
+		if normal == ocupied:
+			self.scene.win()
 				
 	def update(self):
 		for tiles in self.tiles:
