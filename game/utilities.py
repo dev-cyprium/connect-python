@@ -9,7 +9,7 @@ class Stack(object):
 		self._arr.append(obj)
 		
 	def pop(self, obj):
-		self._arr.pop()
+		return self._arr.pop()
 		
-	def peek(self, obj):
-		self._arr[-1]
+	def peek(self):
+		return self._arr[-1]

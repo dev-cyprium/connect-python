@@ -1,8 +1,5 @@
 import pygame
-from random import randrange
-from game.game_object import Grid, Figure
-from game.event_dispatcher import EventDispatcher
-from game.figure_parser import FigureParser
+from game.scene import GameSceneManager, GameScene
 
 class Game(object):
 	
@@ -13,40 +10,18 @@ class Game(object):
 		self.screen = pygame.display.set_mode((Game.WIDTH, Game.HEIGHT))
 		self.done = False
 		self.clock = pygame.time.Clock()
-		self.game_objects = []
-		self.dispatcher = EventDispatcher()
-		
-		self.grid = Grid(400 - 125, 300 - 125, 5)
-		self.game_objects.append(self.grid)
-		
-		# Load figures
-		self.figures = []
-		parser = FigureParser()
-		for figure in parser.parse_figure_file():
-			f = Figure(randrange(50, 600), randrange(50, 400), figure['vertecies'])
-			self.figures.append( f )
-			self.dispatcher.subscribe( f )
-			self.game_objects.append( f )
-
-		
+		self.scene_manager = GameSceneManager( GameScene() )
 		
 	def run(self):
 		while not self.done:
-			# Event listening
+			active_scene = self.scene_manager.active_scene()
 			for event in pygame.event.get():
-				self.dispatcher.dispatch(event)
+				active_scene.dispatch_event(event)
 				if event.type == pygame.QUIT:
 					self.done = True
-			
-			# Game update logic
-			for obj in self.game_objects:
-				obj.update()
-			
-			# Game render the screen		
+			active_scene.update()		
 			self.screen.fill((0, 0, 0))
-			for obj in self.game_objects:
-				obj.render(self.screen)
-				
+			active_scene.render(self.screen)
 			self.clock.tick(60)
 			pygame.display.flip()
 
