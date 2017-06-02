@@ -23,13 +23,16 @@ class Grid(GameObject):
 		for tiles in self.tiles:
 			for tile in tiles:
 				tile.render(surface)
-				
+	
+	# BUG: Does't snap propery				
 	def on_figure_release(self, figure):
 		for tiles in self.tiles:
 			for tile in tiles:
 				if(tile.rect.collidepoint(figure.x, figure.y)):
 					figure.move_to(tile.x, tile.y)
 				
+	def update(self):
+		pass
 		
 class BlankTile(GameObject):
 	SIZE = 50
@@ -40,10 +43,17 @@ class BlankTile(GameObject):
 		self.height = BlankTile.SIZE
 		self.color = (107, 107, 107)
 		self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+		self.active = False
+		self.hover_color = (200, 200, 200)
+		self.normal_color = (0, 0, 0)
 			
 	def render(self, surface):
+		if self.active: 
+			self.normal_color = self.hover_color
+		else:
+			self.normal_color = (0,0,0)  
 		pygame.draw.rect(surface, self.color, self.rect)
-		pygame.draw.rect(surface, (0,0,0), pygame.Rect(self.x + 2, self.y + 2, self.width - 4, self.height - 4))
+		pygame.draw.rect(surface, self.normal_color, pygame.Rect(self.x + 2, self.y + 2, self.width - 4, self.height - 4))
 		
 class ClickableTile(GameObject):
 	SIZE = 50
