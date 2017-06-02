@@ -25,7 +25,13 @@ class Grid(GameObject):
 				tile.render(surface)
 				
 	def on_figure_release(self, figure):
-		print('Figure has been released')
+		for tiles in self.tiles:
+			for tile in tiles:
+				for figure_tile in figure.tiles:
+					if(figure_tile.rect.colliderect(tile)):
+						figure_tile.x = tile.x
+						figure_tile.y = tile.y
+				
 		
 class BlankTile(GameObject):
 	SIZE = 50
@@ -35,9 +41,10 @@ class BlankTile(GameObject):
 		self.width  = BlankTile.SIZE
 		self.height = BlankTile.SIZE
 		self.color = (107, 107, 107)
-		
+		self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+			
 	def render(self, surface):
-		pygame.draw.rect(surface, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
+		pygame.draw.rect(surface, self.color, self.rect)
 		pygame.draw.rect(surface, (0,0,0), pygame.Rect(self.x + 2, self.y + 2, self.width - 4, self.height - 4))
 		
 class ClickableTile(GameObject):
@@ -85,8 +92,12 @@ class Figure(GameObject):
 			for tile in self.tiles:
 				tile.x -= move_x
 				tile.y -= move_y
-				tile.rect = pygame.Rect(tile.x, tile.y, tile.width, tile.height)
+			self.x = self.tiles[0].x
+			self.y = self.tiles[0].y
 		self.mouse_position = pygame.mouse.get_pos()
+		
+		for tile in self.tiles:
+			tile.rect = pygame.Rect(tile.x, tile.y, tile.width, tile.height)
 		
 		if Figure.active_figure is not None:
 			Figure.active_figure.switch_color( (255, 255, 255) )	
