@@ -142,7 +142,7 @@ class Figure(GameObject):
 		self.mouse_position = None
 		self.width = width * ClickableTile.SIZE
 		self.height = height * ClickableTile.SIZE
-		self.pick_location = None
+		self.pick_location = (self.x, self.y)
 		self.ocupied_tiles = None
 		
 	def switch_color(self, color):
@@ -199,7 +199,6 @@ class Figure(GameObject):
 							tile.ocupied = False
 					self.ocupied_tiles = None
 					self.dragging = True
-					self.pick_location = (event.pos)
 					Figure.active_figure = self
 				
 	def on_release(self, event):
