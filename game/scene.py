@@ -7,26 +7,28 @@ import pygame
 import sys
 
 class GameSceneManager(object):
-	def __init__(self, default_scene):
+	def __init__(self):
 		self._scene_stack = Stack()
-		self._scene_stack.push(default_scene)
 		
 	def switch_scene(self, scene):
 		self._scene_stack.push(scene)
 		
 	def active_scene(self):
 		return self._scene_stack.peek()
+		
+	def set_default_scene(self, scene):
+		self._scene_stack.push(scene)
 
 '''
 	Scene responsible for the main game menu
 '''
 class MenuScene(object):
-	def __init__(self):
+	def __init__(self, manager):
 		self.font = pygame.font.SysFont('arial', 64)
 		self.button_font = pygame.font.SysFont('arial', 20)
 		self.dispatcher = EventDispatcher()
 		
-		self.play_button = Button(340, 240, self.button_font, 'Play', self, lambda: print('Clicked Play') )
+		self.play_button = Button(340, 240, self.button_font, 'Play', self, lambda: manager.switch_scene( GameScene(manager) ) )
 		self.exit_button = Button(340, 300, self.button_font, 'Exit', self, lambda: sys.exit() )
 		
 		self.dispatcher.subscribe( self.play_button )
@@ -48,7 +50,7 @@ class MenuScene(object):
 Scene responsible for the gameplay
 '''			
 class GameScene(object):
-	def __init__(self):
+	def __init__(self, manager):
 		self.dispatcher = EventDispatcher()
 		self.game_objects = []
 		self.grid = Grid(400 - 125, 300 - 125, 5, self)

@@ -10,7 +10,8 @@ class Game(object):
 		self.screen = pygame.display.set_mode((Game.WIDTH, Game.HEIGHT))
 		self.done = False
 		self.clock = pygame.time.Clock()
-		self.scene_manager = GameSceneManager( MenuScene() )
+		self.scene_manager = GameSceneManager()
+		self.scene_manager.set_default_scene( MenuScene(self.scene_manager) )
 		
 	def run(self):
 		while not self.done:
