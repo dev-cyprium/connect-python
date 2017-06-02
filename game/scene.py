@@ -3,6 +3,7 @@ from random import randrange
 from game.game_object import Grid, Figure
 from game.event_dispatcher import EventDispatcher
 from game.figure_parser import FigureParser
+import pygame
 
 class GameSceneManager(object):
 	def __init__(self, default_scene):
@@ -31,7 +32,11 @@ class GameScene(object):
 			self.figures.append( f )
 			self.dispatcher.subscribe( f )
 			self.game_objects.append( f )
-	
+		
+		# Load the music
+		pygame.mixer.music.load('./res/theme.mp3')
+		pygame.mixer.music.set_volume(0.1)
+		pygame.mixer.music.play(-1, 0.0)
 	def dispatch_event(self, event):
 		self.dispatcher.dispatch(event)
 		
