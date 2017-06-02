@@ -25,7 +25,7 @@ class Grid(GameObject):
 				tile.render(surface)
 				
 	def on_figure_release(self, figure):
-		pass
+		print('Figure has been released')
 		
 class BlankTile(GameObject):
 	SIZE = 50
@@ -102,7 +102,10 @@ class Figure(GameObject):
 				Figure.active_figure = self
 				
 	def on_release(self, event):
-		self.scene.dispatcher.dispatch( FigureReleaseEvent() )
+		figure = Figure.active_figure
+		if self is not figure:
+			return
+		self.scene.dispatcher.dispatch( FigureReleaseEvent(figure) )
 		Figure.active_figure = None
-		self.dragging = False
-		self.revert_color()
+		figure.dragging = False
+		figure.revert_color()
