@@ -1,5 +1,6 @@
 import pygame
 from random import randrange
+from game.events import FigureReleaseEvent
 
 class GameObject(object):
 	def __init__(self, x, y, scene):
@@ -101,6 +102,7 @@ class Figure(GameObject):
 				Figure.active_figure = self
 				
 	def on_release(self, event):
+		self.scene.dispatcher.dispatch( FigureReleaseEvent() )
 		Figure.active_figure = None
 		self.dragging = False
 		self.revert_color()
