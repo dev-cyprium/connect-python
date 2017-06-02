@@ -32,7 +32,22 @@ class Grid(GameObject):
 					figure.move_to(tile.x, tile.y)
 				
 	def update(self):
-		pass
+		for tiles in self.tiles:
+			for tile in tiles:
+				tile.active = False
+		
+		if Figure.active_figure is not None:	
+			figure = Figure.active_figure
+			candidates = []
+			for tiles in self.tiles:
+				for tile in tiles:
+					for figure_tile in figure.tiles:
+						if(tile.rect.colliderect(figure_tile.rect)):
+							candidates.append(tile)
+							
+			for candidate in candidates:
+				candidate.active = True
+		
 		
 class BlankTile(GameObject):
 	SIZE = 50
