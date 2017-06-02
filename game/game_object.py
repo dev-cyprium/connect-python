@@ -100,7 +100,8 @@ class Figure(GameObject):
 		self.vertecies = vertecies
 		for vertex in vertecies:
 			self.tiles.append(ClickableTile(self.x + vertex[0] * ClickableTile.SIZE, self.y + vertex[1] * ClickableTile.SIZE, self.color, scene))
-					
+		self.x = self.x + vertecies[0][0] * ClickableTile.SIZE
+		self.y = self.y + vertecies[0][1] * ClickableTile.SIZE
 		self.dragging = False
 		self.mouse_position = None
 		
@@ -113,8 +114,8 @@ class Figure(GameObject):
 			tile.color = self.original_color
 	
 	def move_to(self, x, y):
-		self.x = x
-		self.y = y
+		self.x = x - self.vertecies[0][0] * ClickableTile.SIZE
+		self.y = y - self.vertecies[0][1] * ClickableTile.SIZE
 		for idx, tile in enumerate(self.tiles):
 			tile.x = self.x + self.vertecies[idx][0] * ClickableTile.SIZE
 			tile.y = self.y + self.vertecies[idx][1] * ClickableTile.SIZE	
