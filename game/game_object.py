@@ -189,7 +189,6 @@ class Figure(GameObject):
 	def render(self, surface):
 		for tile in self.tiles:
 			tile.render(surface)
-		pygame.draw.rect(surface, (255, 0, 0), pygame.Rect(self.x, self.y, 5, 5))
 	
 	def on_click(self, event):
 		if Figure.active_figure is None:
