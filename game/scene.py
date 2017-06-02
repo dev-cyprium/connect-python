@@ -4,6 +4,7 @@ from game.game_object import Grid, Figure, Button
 from game.event_dispatcher import EventDispatcher
 from game.figure_parser import FigureParser
 import pygame
+import sys
 
 class GameSceneManager(object):
 	def __init__(self, default_scene):
@@ -25,8 +26,8 @@ class MenuScene(object):
 		self.button_font = pygame.font.SysFont('arial', 20)
 		self.dispatcher = EventDispatcher()
 		
-		self.play_button = Button(340, 240, self.button_font, 'Play', self)
-		self.exit_button = Button(340, 300, self.button_font, 'Exit', self)
+		self.play_button = Button(340, 240, self.button_font, 'Play', self, lambda: print('Clicked Play') )
+		self.exit_button = Button(340, 300, self.button_font, 'Exit', self, lambda: sys.exit() )
 		
 		self.dispatcher.subscribe( self.play_button )
 		self.dispatcher.subscribe( self.exit_button )
