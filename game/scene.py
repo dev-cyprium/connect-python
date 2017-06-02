@@ -57,6 +57,7 @@ class GameScene(object):
 		self.grid = Grid(400 - 125, 300 - 125, 5, self)
 		self.dispatcher.subscribe(self.grid)
 		self.game_objects.append(self.grid)
+		self.won = False
 		
 		# Load figures
 		self.figures = []
@@ -77,7 +78,8 @@ class GameScene(object):
 		# pygame.mixer.music.set_volume(0.1)
 		# pygame.mixer.music.play(-1, 0.0)
 	def dispatch_event(self, event):
-		self.dispatcher.dispatch(event)
+		if not self.won:
+			self.dispatcher.dispatch(event)
 		
 	def render(self, surface):
 		if Figure.active_figure is not None:
@@ -91,9 +93,10 @@ class GameScene(object):
 				obj.render(surface)
 		
 	def update(self):
-		for obj in self.game_objects:
-			obj.update()
+		if not self.won:
+			for obj in self.game_objects:
+				obj.update()
 	
 	def win(self):
-		print("You've won congratulations!")
+		self.won = True
 	
