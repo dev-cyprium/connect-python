@@ -59,6 +59,7 @@ class Figure(GameObject):
 	def __init__(self, x, y, vertecies):
 		super().__init__(x, y)
 		self.color = (randrange(0,256), randrange(0,256), randrange(0,256))
+		self.original_color = self.color
 		self.tiles = []
 		
 		for vertex in vertecies:
@@ -70,6 +71,10 @@ class Figure(GameObject):
 	def switch_color(self, color):
 		for tile in self.tiles:
 			tile.color = color
+	
+	def revert_color(self):
+		for tile in self.tiles:
+			tile.color = self.original_color
 		
 	def update(self):
 		if(self.dragging):
@@ -88,12 +93,12 @@ class Figure(GameObject):
 			tile.render(surface)
 	
 	def on_click(self, event):
-		print(repr(self.tiles))
-		Figure.active_figure = self
 		for tile in self.tiles:
 			if(tile.rect.collidepoint(event.pos)):
 				self.dragging = True
+				Figure.active_figure = self
 				
 	def on_release(self, event):
 		Figure.active_figure = None
 		self.dragging = False
+		self.revert_color()
