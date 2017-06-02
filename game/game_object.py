@@ -2,9 +2,10 @@ import pygame
 from random import randrange
 
 class GameObject(object):
-	def __init__(self, x, y):
+	def __init__(self, x, y, scene):
 		self.x = x
 		self.y = y
+		self.scene = scene
 		
 	def render(self, surface):
 		pass
@@ -13,24 +14,23 @@ class GameObject(object):
 		pass
 		
 class Grid(GameObject):
-	def __init__(self, x, y, size):
-		super().__init__(x, y)
-		self.tiles = [[BlankTile(self.x + x * BlankTile.SIZE, self.y + y * BlankTile.SIZE) for x in range(size)] for y in range(size)]
+	def __init__(self, x, y, size, scene):
+		super().__init__(x, y, scene)
+		self.tiles = [[BlankTile(self.x + x * BlankTile.SIZE, self.y + y * BlankTile.SIZE, scene) for x in range(size)] for y in range(size)]
 		
 	def render(self, surface):
 		for tiles in self.tiles:
 			for tile in tiles:
 				tile.render(surface)
 				
-	def update(self):
-		if Figure.active_figure is not None:
-			Figure.active_figure.switch_color( (255, 255, 255) )
+	def on_figure_release(self, figure):
+		pass
 		
 class BlankTile(GameObject):
 	SIZE = 50
 	
-	def __init__(self, x, y):
-		super().__init__(x, y)
+	def __init__(self, x, y, scene):
+		super().__init__(x, y, scene)
 		self.width  = BlankTile.SIZE
 		self.height = BlankTile.SIZE
 		self.color = (107, 107, 107)
@@ -42,8 +42,8 @@ class BlankTile(GameObject):
 class ClickableTile(GameObject):
 	SIZE = 50
 	
-	def __init__(self, x, y, color):
-		super().__init__(x, y)
+	def __init__(self, x, y, color, scene):
+		super().__init__(x, y, scene)
 		self.width = ClickableTile.SIZE
 		self.height = ClickableTile.SIZE
 		self.color = color
@@ -56,14 +56,14 @@ class Figure(GameObject):
 	
 	active_figure = None
 	
-	def __init__(self, x, y, vertecies):
-		super().__init__(x, y)
+	def __init__(self, x, y, vertecies, scene):
+		super().__init__(x, y, scene)
 		self.color = (randrange(0,256), randrange(0,256), randrange(0,256))
 		self.original_color = self.color
 		self.tiles = []
 		
 		for vertex in vertecies:
-			self.tiles.append(ClickableTile(self.x + vertex[0] * ClickableTile.SIZE, self.y + vertex[1] * ClickableTile.SIZE, self.color))
+			self.tiles.append(ClickableTile(self.x + vertex[0] * ClickableTile.SIZE, self.y + vertex[1] * ClickableTile.SIZE, self.color, scene))
 					
 		self.dragging = False
 		self.mouse_position = None
@@ -86,7 +86,9 @@ class Figure(GameObject):
 				tile.y -= move_y
 				tile.rect = pygame.Rect(tile.x, tile.y, tile.width, tile.height)
 		self.mouse_position = pygame.mouse.get_pos()
-			
+		
+		if Figure.active_figure is not None:
+			Figure.active_figure.switch_color( (255, 255, 255) )	
 		
 	def render(self, surface):
 		for tile in self.tiles:

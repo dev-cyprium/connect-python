@@ -19,14 +19,14 @@ class GameScene(object):
 	def __init__(self):
 		self.dispatcher = EventDispatcher()
 		self.game_objects = []
-		self.grid = Grid(400 - 125, 300 - 125, 5)
+		self.grid = Grid(400 - 125, 300 - 125, 5, self)
 		self.game_objects.append(self.grid)
 		
 		# Load figures
 		self.figures = []
 		parser = FigureParser()
 		for figure in parser.parse_figure_file():
-			f = Figure(randrange(50, 600), randrange(50, 400), figure['vertecies'])
+			f = Figure(randrange(50, 600), randrange(50, 400), figure['vertecies'], self)
 			self.figures.append( f )
 			self.dispatcher.subscribe( f )
 			self.game_objects.append( f )
