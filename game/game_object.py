@@ -49,9 +49,21 @@ class Grid(GameObject):
 		if len(self.placers) == 0:
 			return
 		
-		figure.move_to(self.placers[0].x, self.placers[0].y)
+		ocupied = False
 		for placer in self.placers:
-			placer.ocupied = True
+			if placer.ocupied:
+				ocupied = True
+				break
+					
+		if not ocupied:
+			figure.move_to(self.placers[0].x, self.placers[0].y)
+			for placer in self.placers:
+				placer.ocupied = True
+			figure.ocupied_tiles = self.placers
+		else:
+			old_x = figure.pick_location[0]
+			old_y = figure.pick_location[1]
+			figure.move_to(old_x, old_y)
 				
 	def update(self):
 		for tiles in self.tiles:
@@ -130,6 +142,8 @@ class Figure(GameObject):
 		self.mouse_position = None
 		self.width = width * ClickableTile.SIZE
 		self.height = height * ClickableTile.SIZE
+		self.pick_location = None
+		self.ocupied_tiles = None
 		
 	def switch_color(self, color):
 		for tile in self.tiles:
@@ -181,7 +195,12 @@ class Figure(GameObject):
 		if Figure.active_figure is None:
 			for tile in self.tiles:
 				if(tile.rect.collidepoint(event.pos)):
+					if self.ocupied_tiles is not None:
+						for tile in self.ocupied_tiles:
+							tile.ocupied = False
+					self.ocupied_tiles = None
 					self.dragging = True
+					self.pick_location = (event.pos)
 					Figure.active_figure = self
 				
 	def on_release(self, event):
