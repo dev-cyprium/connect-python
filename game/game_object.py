@@ -163,10 +163,11 @@ class Figure(GameObject):
 			tile.render(surface)
 	
 	def on_click(self, event):
-		for tile in self.tiles:
-			if(tile.rect.collidepoint(event.pos)):
-				self.dragging = True
-				Figure.active_figure = self
+		if Figure.active_figure is None:
+			for tile in self.tiles:
+				if(tile.rect.collidepoint(event.pos)):
+					self.dragging = True
+					Figure.active_figure = self
 				
 	def on_release(self, event):
 		figure = Figure.active_figure

@@ -74,8 +74,15 @@ class GameScene(object):
 		self.dispatcher.dispatch(event)
 		
 	def render(self, surface):
-		for obj in self.game_objects:
-			obj.render(surface)
+		if Figure.active_figure is not None:
+			figure = Figure.active_figure
+			for obj in self.game_objects:
+				if obj is not figure:	
+					obj.render(surface)
+			figure.render(surface)
+		else:
+			for obj in self.game_objects:
+				obj.render(surface)
 		
 	def update(self):
 		for obj in self.game_objects:
