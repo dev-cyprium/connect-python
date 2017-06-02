@@ -55,7 +55,7 @@ class Grid(GameObject):
 				ocupied = True
 				break
 					
-		if not ocupied:
+		if not ocupied and len(self.placers) == len(figure.tiles):
 			figure.move_to(self.placers[0].x, self.placers[0].y)
 			for placer in self.placers:
 				placer.ocupied = True
