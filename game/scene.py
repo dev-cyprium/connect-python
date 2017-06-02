@@ -1,6 +1,6 @@
 from game.utilities import Stack
 from random import randrange
-from game.game_object import Grid, Figure
+from game.game_object import Grid, Figure, Button
 from game.event_dispatcher import EventDispatcher
 from game.figure_parser import FigureParser
 import pygame
@@ -22,13 +22,23 @@ class GameSceneManager(object):
 class MenuScene(object):
 	def __init__(self):
 		self.font = pygame.font.SysFont('arial', 64)
+		self.button_font = pygame.font.SysFont('arial', 20)
+		self.dispatcher = EventDispatcher()
+		
+		self.play_button = Button(340, 240, self.button_font, 'Play', self)
+		self.exit_button = Button(340, 300, self.button_font, 'Exit', self)
+		
+		self.dispatcher.subscribe( self.play_button )
+		self.dispatcher.subscribe( self.exit_button )
 		
 	def dispatch_event(self, event):
-		pass
+		self.dispatcher.dispatch(event)
 		
 	def render(self, surface):
 		label = self.font.render('Connect', 1, (255,255,255))
 		surface.blit(label, (280, 120))
+		self.play_button.render(surface)
+		self.exit_button.render(surface)
 				
 	def update(self):
 		pass

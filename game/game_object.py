@@ -14,6 +14,25 @@ class GameObject(object):
 	def update(self):
 		pass
 		
+class Button(GameObject):
+	def __init__(self, x, y, font, text, scene):
+		super().__init__(x, y, scene)
+		self.font = font
+		self.width = 100
+		self.height = 30
+		self.text = text
+		self.font_width = font.size(text)[0]
+		self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+		
+	def render(self, surface):
+		pygame.draw.rect(surface, (255, 255, 255), self.rect)
+		label = self.font.render(self.text, 1, (0, 0, 0))
+		surface.blit(label, (self.x + (self.width / 2) - self.font_width / 2, self.y + 4))	
+	
+	def on_click(self, event):
+		if(self.rect.collidepoint(event.pos)):	
+			print('Button {} has been clicked!'.format(self.text))
+	
 class Grid(GameObject):
 	def __init__(self, x, y, size, scene):
 		super().__init__(x, y, scene)
