@@ -27,7 +27,8 @@ class Grid(GameObject):
 	def on_figure_release(self, figure):
 		for tiles in self.tiles:
 			for tile in tiles:
-				pass
+				if(tile.rect.collidepoint(figure.x, figure.y)):
+					figure.move_to(tile.x, tile.y)
 				
 		
 class BlankTile(GameObject):
@@ -66,7 +67,7 @@ class Figure(GameObject):
 		self.color = (randrange(0,256), randrange(0,256), randrange(0,256))
 		self.original_color = self.color
 		self.tiles = []
-		
+		self.vertecies = vertecies
 		for vertex in vertecies:
 			self.tiles.append(ClickableTile(self.x + vertex[0] * ClickableTile.SIZE, self.y + vertex[1] * ClickableTile.SIZE, self.color, scene))
 					
@@ -80,6 +81,13 @@ class Figure(GameObject):
 	def revert_color(self):
 		for tile in self.tiles:
 			tile.color = self.original_color
+	
+	def move_to(self, x, y):
+		self.x = x
+		self.y = y
+		for idx, tile in enumerate(self.tiles):
+			tile.x = self.x + self.vertecies[idx][0] * ClickableTile.SIZE
+			tile.y = self.y + self.vertecies[idx][1] * ClickableTile.SIZE	
 		
 	def update(self):
 		if(self.dragging):
