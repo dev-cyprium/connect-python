@@ -18,37 +18,42 @@ class Grid(GameObject):
 	def __init__(self, x, y, size, scene):
 		super().__init__(x, y, scene)
 		self.tiles = [[BlankTile(self.x + x * BlankTile.SIZE, self.y + y * BlankTile.SIZE, scene) for x in range(size)] for y in range(size)]
+		self.placers = []
 		
 	def render(self, surface):
 		for tiles in self.tiles:
 			for tile in tiles:
 				tile.render(surface)
 	
-	# BUG: Does't snap propery				
 	def on_figure_release(self, figure):
-		for tiles in self.tiles:
-			for tile in tiles:
-				if(tile.rect.collidepoint(figure.x, figure.y)):
-					figure.move_to(tile.x, tile.y)
+		if len(self.placers) == 0:
+			return
+		figure.move_to(self.placers[0].x, self.placers[0].y)
 				
 	def update(self):
 		for tiles in self.tiles:
 			for tile in tiles:
 				tile.active = False
+				self.placers = []
 		
 		if Figure.active_figure is not None:	
 			figure = Figure.active_figure
-			candidates = []
-			for tiles in self.tiles:
-				for tile in tiles:
-					for figure_tile in figure.tiles:
+			for figure_tile in figure.tiles:
+				candidates = []
+				for tiles in self.tiles:
+					for tile in tiles:
+						info = {}
 						if(tile.rect.colliderect(figure_tile.rect)):
-							candidates.append(tile)
-							
-			for candidate in candidates:
-				candidate.active = True
-		
-		
+							clip_rect = tile.rect.clip(figure_tile.rect)
+							info['tile'] = tile
+							info['clip_area'] = clip_rect.width * clip_rect.height
+							candidates.append(info)
+				if len(candidates) == 0:
+					continue
+				highlited = max(candidates, key=lambda d: d['clip_area'])
+				highlited['tile'].active = True
+				self.placers.append(highlited['tile'])
+				
 class BlankTile(GameObject):
 	SIZE = 50
 	
