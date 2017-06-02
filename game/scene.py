@@ -5,6 +5,7 @@ from game.event_dispatcher import EventDispatcher
 from game.figure_parser import FigureParser
 import pygame
 import sys
+import math
 
 class GameSceneManager(object):
 	def __init__(self):
@@ -60,8 +61,13 @@ class GameScene(object):
 		# Load figures
 		self.figures = []
 		parser = FigureParser()
+		radius = 230
+		angle = 0
 		for figure in parser.parse_figure_file():
-			f = Figure(randrange(50, 600), randrange(50, 400), figure['vertecies'], self)
+			x = math.cos(angle) * radius + 380
+			y = math.sin(angle) * radius + 280
+			angle += math.pi / 4
+			f = Figure(x, y, figure['vertecies'], figure['width'], figure['height'], self)
 			self.figures.append( f )
 			self.dispatcher.subscribe( f )
 			self.game_objects.append( f )

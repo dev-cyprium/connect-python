@@ -112,7 +112,7 @@ class Figure(GameObject):
 	
 	active_figure = None
 	
-	def __init__(self, x, y, vertecies, scene):
+	def __init__(self, x, y, vertecies, width, height, scene):
 		super().__init__(x, y, scene)
 		self.color = (randrange(0,256), randrange(0,256), randrange(0,256))
 		self.original_color = self.color
@@ -124,6 +124,8 @@ class Figure(GameObject):
 		self.y = self.y + vertecies[0][1] * ClickableTile.SIZE
 		self.dragging = False
 		self.mouse_position = None
+		self.width = width * ClickableTile.SIZE
+		self.height = height * ClickableTile.SIZE
 		
 	def switch_color(self, color):
 		for tile in self.tiles:
@@ -145,9 +147,17 @@ class Figure(GameObject):
 			current_position = pygame.mouse.get_pos()
 			move_x = self.mouse_position[0] - current_position[0]
 			move_y = self.mouse_position[1] - current_position[1]
-			for tile in self.tiles:
-				tile.x -= move_x
-				tile.y -= move_y
+			self.x -= move_x
+			self.y -= move_y
+			if self.x < 0:
+				self.x = 0
+			if self.y < 0:
+				self.y = 0
+			if self.x + self.width > 800:
+				self.x = 800 - self.width
+			if self.y + self.height > 600:
+				self.y = 600 - self.height
+			self.move_to(self.x, self.y)
 			self.x = self.tiles[0].x
 			self.y = self.tiles[0].y
 		self.mouse_position = pygame.mouse.get_pos()
@@ -161,6 +171,7 @@ class Figure(GameObject):
 	def render(self, surface):
 		for tile in self.tiles:
 			tile.render(surface)
+		pygame.draw.rect(surface, (255, 0, 0), pygame.Rect(self.x, self.y, 5, 5))
 	
 	def on_click(self, event):
 		if Figure.active_figure is None:
