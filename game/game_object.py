@@ -48,7 +48,10 @@ class Grid(GameObject):
 	def on_figure_release(self, figure):
 		if len(self.placers) == 0:
 			return
+		
 		figure.move_to(self.placers[0].x, self.placers[0].y)
+		for placer in self.placers:
+			placer.ocupied = True
 				
 	def update(self):
 		for tiles in self.tiles:
@@ -86,6 +89,7 @@ class BlankTile(GameObject):
 		self.active = False
 		self.hover_color = (200, 200, 200)
 		self.normal_color = (0, 0, 0)
+		self.ocupied = False
 			
 	def render(self, surface):
 		if self.active: 
