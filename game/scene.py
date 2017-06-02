@@ -15,7 +15,27 @@ class GameSceneManager(object):
 		
 	def active_scene(self):
 		return self._scene_stack.peek()
-			
+
+'''
+	Scene responsible for the main game menu
+'''
+class MenuScene(object):
+	def __init__(self):
+		self.font = pygame.font.SysFont('arial', 64)
+		
+	def dispatch_event(self, event):
+		pass
+		
+	def render(self, surface):
+		label = self.font.render('Connect', 1, (255,255,255))
+		surface.blit(label, (280, 120))
+				
+	def update(self):
+		pass
+
+'''
+Scene responsible for the gameplay
+'''			
 class GameScene(object):
 	def __init__(self):
 		self.dispatcher = EventDispatcher()
@@ -34,9 +54,9 @@ class GameScene(object):
 			self.game_objects.append( f )
 		
 		# Load the music
-		pygame.mixer.music.load('./res/theme.mp3')
-		pygame.mixer.music.set_volume(0.1)
-		pygame.mixer.music.play(-1, 0.0)
+		# pygame.mixer.music.load('./res/theme.mp3')
+		# pygame.mixer.music.set_volume(0.1)
+		# pygame.mixer.music.play(-1, 0.0)
 	def dispatch_event(self, event):
 		self.dispatcher.dispatch(event)
 		

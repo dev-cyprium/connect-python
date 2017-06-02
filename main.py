@@ -1,5 +1,5 @@
 import pygame
-from game.scene import GameSceneManager, GameScene
+from game.scene import GameSceneManager, GameScene, MenuScene
 
 class Game(object):
 	
@@ -10,7 +10,7 @@ class Game(object):
 		self.screen = pygame.display.set_mode((Game.WIDTH, Game.HEIGHT))
 		self.done = False
 		self.clock = pygame.time.Clock()
-		self.scene_manager = GameSceneManager( GameScene() )
+		self.scene_manager = GameSceneManager( MenuScene() )
 		
 	def run(self):
 		while not self.done:
