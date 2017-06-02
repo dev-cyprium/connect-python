@@ -27,10 +27,7 @@ class Grid(GameObject):
 	def on_figure_release(self, figure):
 		for tiles in self.tiles:
 			for tile in tiles:
-				for figure_tile in figure.tiles:
-					if(figure_tile.rect.colliderect(tile)):
-						figure_tile.x = tile.x
-						figure_tile.y = tile.y
+				pass
 				
 		
 class BlankTile(GameObject):
