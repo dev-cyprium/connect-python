@@ -32,7 +32,7 @@ class GameScene(object):
 			self.game_objects.append( f )
 	
 	def dispatch_event(self, event):
-		pass
+		self.dispatcher.dispatch(event)
 		
 	def render(self, surface):
 		for obj in self.game_objects:
