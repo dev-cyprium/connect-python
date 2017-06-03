@@ -85,6 +85,7 @@ class GameScene(object):
 		pygame.mixer.music.load('./res/theme.mp3')
 		pygame.mixer.music.set_volume(0.1)
 		pygame.mixer.music.play(-1, 0.0)
+		
 	def dispatch_event(self, event):
 		self.dispatcher.dispatch(event)
 		
@@ -113,7 +114,13 @@ class GameScene(object):
 	
 	def win(self):
 		self.won = True
+		self.dispatcher.clear_queue()
+		self.dispatcher.subscribe(self.reset_button)
 	
 	def reset(self):
+		if not self.won:
+			return
+		self.dispatcher.clear_queue()
 		self.manager.clear_queue()
-		self.manager.set_default_scene(GameScene(self.manager))
+		new_scene = GameScene(self.manager)
+		self.manager.set_default_scene(new_scene)

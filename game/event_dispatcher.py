@@ -25,3 +25,6 @@ class EventDispatcher(object):
 				
 	def subscribe(self, obj):
 		self.listeners.append(obj)
+		
+	def clear_queue(self):
+		self.listeners = []
