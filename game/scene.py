@@ -19,6 +19,9 @@ class GameSceneManager(object):
 		
 	def set_default_scene(self, scene):
 		self._scene_stack.push(scene)
+		
+	def clear_queue(self):
+		self._scene_stack = Stack()
 
 '''
 	Scene responsible for the main game menu
@@ -56,8 +59,13 @@ class GameScene(object):
 		self.game_objects = []
 		self.grid = Grid(400 - 125, 300 - 125, 5, self)
 		self.dispatcher.subscribe(self.grid)
+		self.manager = manager
 		self.game_objects.append(self.grid)
 		self.won = False
+		self.font = pygame.font.SysFont('arial', 20)
+		self.reset_button = Button(350, 300, self.font, "Reset", self, self.reset )
+		
+		self.dispatcher.subscribe(self.reset_button)
 		
 		# Load figures
 		self.figures = []
@@ -78,8 +86,7 @@ class GameScene(object):
 		# pygame.mixer.music.set_volume(0.1)
 		# pygame.mixer.music.play(-1, 0.0)
 	def dispatch_event(self, event):
-		if not self.won:
-			self.dispatcher.dispatch(event)
+		self.dispatcher.dispatch(event)
 		
 	def render(self, surface):
 		if Figure.active_figure is not None:
@@ -91,7 +98,14 @@ class GameScene(object):
 		else:
 			for obj in self.game_objects:
 				obj.render(surface)
-		
+				
+		if self.won:
+			pygame.draw.rect(surface, (255,255,255), pygame.Rect(400 - 100, 300 - 50, 200, 100))
+			pygame.draw.rect(surface, (0,0,0), pygame.Rect(400 - 99, 300 - 49, 198, 98))
+			label = self.font.render("Congratulations", 1, (255, 255, 255))
+			surface.blit(label, (330, 260))
+			self.reset_button.render(surface)
+			
 	def update(self):
 		if not self.won:
 			for obj in self.game_objects:
@@ -100,3 +114,6 @@ class GameScene(object):
 	def win(self):
 		self.won = True
 	
+	def reset(self):
+		self.manager.clear_queue()
+		self.manager.set_default_scene(GameScene(self.manager))
