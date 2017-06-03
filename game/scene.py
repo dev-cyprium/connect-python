@@ -82,9 +82,9 @@ class GameScene(object):
 			self.game_objects.append( f )
 		
 		# Load the music
-		# pygame.mixer.music.load('./res/theme.mp3')
-		# pygame.mixer.music.set_volume(0.1)
-		# pygame.mixer.music.play(-1, 0.0)
+		pygame.mixer.music.load('./res/theme.mp3')
+		pygame.mixer.music.set_volume(0.1)
+		pygame.mixer.music.play(-1, 0.0)
 	def dispatch_event(self, event):
 		self.dispatcher.dispatch(event)
 		
