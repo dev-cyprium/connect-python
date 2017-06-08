@@ -137,7 +137,7 @@ class GameScene(object):
 			return
 		self.dispatcher.clear_queue()
 		self.manager.clear_queue()
-		new_scene = GameScene(self.manager)
+		new_scene = GameScene(self.manager, self.music_on)
 		self.manager.set_default_scene(new_scene)
 	
 	def reset_hard(self):
