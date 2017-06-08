@@ -33,6 +33,25 @@ class Button(GameObject):
 	def on_click(self, event):
 		if(self.rect.collidepoint(event.pos)):	
 			self.action()
+
+class SoundButton(Button):
+	
+	MUTED = 1
+	UNMUTED = 0
+	
+	def __init__(self, x, y, scene, action):
+		super().__init__(x, y, None, None, scene, action)
+		self.mute_image   = pygame.load('./res/mute.png')
+		self.unmute_image = pygame.load('./res/unmute.png')
+		self.state = SoundButton.UNMUTED
+		
+	def render(self, surface):
+		if self.state = SoundButton.MUTED:
+			pic = self.mute_image
+		else:
+			pic = self.unmute_image
+		
+		surface.blit(pic, (self.x, self.y))
 	
 class Grid(GameObject):
 	def __init__(self, x, y, size, scene):
