@@ -74,6 +74,13 @@ class SoundButton(Button):
 		
 		surface.blit(pic, (self.x, self.y))
 	
+	def set_state(self, state):
+		if state:
+			self.state = SoundButton.UNMUTED
+		else:
+			self.state = SoundButton.MUTED
+		
+	
 	def on_click(self, event):
 		mx = event.pos[0]
 		my = event.pos[1]

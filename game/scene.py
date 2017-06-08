@@ -1,6 +1,6 @@
 from game.utilities import Stack
 from random import randrange
-from game.game_object import Grid, Figure, Button, SoundButton
+from game.game_object import Grid, Figure, Button, SoundButton, ResetButton
 from game.event_dispatcher import EventDispatcher
 from game.figure_parser import FigureParser
 import pygame
@@ -54,7 +54,7 @@ class MenuScene(object):
 Scene responsible for the gameplay
 '''			
 class GameScene(object):
-	def __init__(self, manager):
+	def __init__(self, manager, music_paused=False):
 		self.dispatcher = EventDispatcher()
 		self.game_objects = []
 		self.grid = Grid(400 - 125, 300 - 125, 5, self)
@@ -65,9 +65,11 @@ class GameScene(object):
 		self.font = pygame.font.SysFont('arial', 20)
 		self.reset_button = Button(350, 300, self.font, "Reset", self, self.reset )
 		self.sound_button = SoundButton(10, 10, self, self.toggle_music )
+		self.game_reset   = ResetButton(80, 10, self, self.reset_hard )
 		
 		self.dispatcher.subscribe(self.reset_button)
 		self.dispatcher.subscribe(self.sound_button)
+		self.dispatcher.subscribe(self.game_reset)
 		
 		# Load figures
 		self.figures = []
@@ -84,10 +86,17 @@ class GameScene(object):
 			self.game_objects.append( f )
 		
 		# Load the music
-		pygame.mixer.music.load('./res/theme.mp3')
-		pygame.mixer.music.set_volume(0.1)
-		pygame.mixer.music.play(-1, 0.0)
-		self.music_on = True
+		if not pygame.mixer.music.get_busy():
+			pygame.mixer.music.load('./res/theme.mp3')
+			pygame.mixer.music.set_volume(0.1)
+			pygame.mixer.music.play(-1, 0.0)
+			self.music_on = True
+		else:
+			if music_paused:
+				self.music_on = True
+			else:
+				self.music_on = False
+			self.sound_button.set_state(self.music_on)
 		
 	def dispatch_event(self, event):
 		self.dispatcher.dispatch(event)
@@ -104,6 +113,7 @@ class GameScene(object):
 				obj.render(surface)
 		
 		self.sound_button.render(surface)
+		self.game_reset.render(surface)
 		
 		if self.won:
 			pygame.draw.rect(surface, (255,255,255), pygame.Rect(400 - 100, 300 - 50, 200, 100))
@@ -129,6 +139,12 @@ class GameScene(object):
 		self.manager.clear_queue()
 		new_scene = GameScene(self.manager)
 		self.manager.set_default_scene(new_scene)
+	
+	def reset_hard(self):
+		self.dispatcher.clear_queue()
+		self.manager.clear_queue()
+		new_scene = GameScene(self.manager, self.music_on)
+		self.manager.set_default_scene(new_scene)	
 		
 	def toggle_music(self):
 		if self.music_on:
