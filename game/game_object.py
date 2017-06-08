@@ -106,8 +106,27 @@ class Grid(GameObject):
 			for tile in tiles:
 				tile.render(surface)
 	
+	def check_collision_with_others(self, figure):
+		colided = False
+		other_figure_tiles = []
+		for obj in self.scene.game_objects:
+			if obj.__class__.__name__ == 'Figure':
+				if obj == figure: continue
+				other_figure_tiles.extend(map( lambda item: item.rect, obj.tiles) )
+				
+		for my_rect in map(lambda item: item.rect, figure.tiles):
+			for other_rect in other_figure_tiles:
+				if my_rect.colliderect(other_rect):
+					colided = True
+					break  
+		return colided
+	
 	def on_figure_release(self, figure):
 		if len(self.placers) == 0:
+			if self.check_collision_with_others(figure):
+				old_x = figure.pick_location[0]
+				old_y = figure.pick_location[1]
+				figure.move_to(old_x, old_y)
 			return
 						
 		ocupied = False
@@ -116,7 +135,7 @@ class Grid(GameObject):
 				ocupied = True
 				break
 					
-		if not ocupied and len(self.placers) == len(figure.tiles):
+		if not ocupied and len(self.placers) == len(figure.tiles) and not self.check_collision_with_others(figure):
 			figure.move_to(self.placers[0].x, self.placers[0].y)
 			for placer in self.placers:
 				placer.ocupied = True
