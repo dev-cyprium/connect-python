@@ -1,6 +1,6 @@
 from game.utilities import Stack
 from random import randrange
-from game.game_object import Grid, Figure, Button
+from game.game_object import Grid, Figure, Button, SoundButton
 from game.event_dispatcher import EventDispatcher
 from game.figure_parser import FigureParser
 import pygame
@@ -64,6 +64,7 @@ class GameScene(object):
 		self.won = False
 		self.font = pygame.font.SysFont('arial', 20)
 		self.reset_button = Button(350, 300, self.font, "Reset", self, self.reset )
+		self.sound_button = SoundButton(0, 0, self, None)
 		
 		self.dispatcher.subscribe(self.reset_button)
 		
@@ -90,6 +91,8 @@ class GameScene(object):
 		self.dispatcher.dispatch(event)
 		
 	def render(self, surface):
+		self.sound_button.render(surface)
+		
 		if Figure.active_figure is not None:
 			figure = Figure.active_figure
 			for obj in self.game_objects:

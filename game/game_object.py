@@ -46,7 +46,7 @@ class SoundButton(Button):
 		self.state = SoundButton.UNMUTED
 		
 	def render(self, surface):
-		if self.state = SoundButton.MUTED:
+		if self.state == SoundButton.MUTED:
 			pic = self.mute_image
 		else:
 			pic = self.unmute_image
