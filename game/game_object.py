@@ -158,10 +158,6 @@ class Grid(GameObject):
 			self.scene.win()
 				
 	def update(self):
-		print("Placers length: {}".format(len(self.placers)))
-		active_tiles = [j for i in self.tiles for j in i if j.active]
-		print("Active tiles count: {}".format(len(active_tiles)))
-		
 		for tiles in self.tiles:
 			for tile in tiles:
 				tile.active = False
