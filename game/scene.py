@@ -64,9 +64,10 @@ class GameScene(object):
 		self.won = False
 		self.font = pygame.font.SysFont('arial', 20)
 		self.reset_button = Button(350, 300, self.font, "Reset", self, self.reset )
-		self.sound_button = SoundButton(10, 10, self, None)
+		self.sound_button = SoundButton(10, 10, self, self.toggle_music )
 		
 		self.dispatcher.subscribe(self.reset_button)
+		self.dispatcher.subscribe(self.sound_button)
 		
 		# Load figures
 		self.figures = []
@@ -86,6 +87,7 @@ class GameScene(object):
 		pygame.mixer.music.load('./res/theme.mp3')
 		pygame.mixer.music.set_volume(0.1)
 		pygame.mixer.music.play(-1, 0.0)
+		self.music_on = True
 		
 	def dispatch_event(self, event):
 		self.dispatcher.dispatch(event)
@@ -127,3 +129,11 @@ class GameScene(object):
 		self.manager.clear_queue()
 		new_scene = GameScene(self.manager)
 		self.manager.set_default_scene(new_scene)
+		
+	def toggle_music(self):
+		if self.music_on:
+			self.music_on = False
+			pygame.mixer.music.pause()
+		else:
+			self.music_on = True
+			pygame.mixer.music.unpause()

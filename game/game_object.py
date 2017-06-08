@@ -45,7 +45,8 @@ class SoundButton(Button):
 		self.mute_image   = pygame.image.load('./res/mute.png')
 		self.unmute_image = pygame.image.load('./res/unmute.png')
 		self.state = SoundButton.UNMUTED
-		# TODO: override rect for collision
+		self.circle_position = (self.x + 30, self.y + 30)
+		self.radius = 30
 		
 	def render(self, surface):
 		if self.state == SoundButton.MUTED:
@@ -55,6 +56,20 @@ class SoundButton(Button):
 		
 		surface.blit(pic, (self.x, self.y))
 	
+	def on_click(self, event):
+		mx = event.pos[0]
+		my = event.pos[1]
+		cx = self.x + 30
+		cy = self.y + 30
+		if (mx - cx)**2 + (my - cy)**2 < self.radius**2:
+			if self.state == SoundButton.UNMUTED:
+				self.state = SoundButton.MUTED
+			else:
+				self.state = SoundButton.UNMUTED
+			
+			self.action()
+		
+			
 class Grid(GameObject):
 	def __init__(self, x, y, size, scene):
 		super().__init__(x, y, scene)
