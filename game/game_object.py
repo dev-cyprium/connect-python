@@ -158,6 +158,10 @@ class Grid(GameObject):
 			self.scene.win()
 				
 	def update(self):
+		print("Placers length: {}".format(len(self.placers)))
+		active_tiles = [j for i in self.tiles for j in i if j.active]
+		print("Active tiles count: {}".format(len(active_tiles)))
+		
 		for tiles in self.tiles:
 			for tile in tiles:
 				tile.active = False
@@ -178,8 +182,9 @@ class Grid(GameObject):
 				if len(candidates) == 0:
 					continue
 				highlited = max(candidates, key=lambda d: d['clip_area'])
-				highlited['tile'].active = True
-				self.placers.append(highlited['tile'])
+				if not highlited['tile'].active:
+					highlited['tile'].active = True
+					self.placers.append(highlited['tile'])
 				
 class BlankTile(GameObject):
 	SIZE = 50
