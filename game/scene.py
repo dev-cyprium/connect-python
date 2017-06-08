@@ -64,7 +64,7 @@ class GameScene(object):
 		self.won = False
 		self.font = pygame.font.SysFont('arial', 20)
 		self.reset_button = Button(350, 300, self.font, "Reset", self, self.reset )
-		self.sound_button = SoundButton(0, 0, self, None)
+		self.sound_button = SoundButton(10, 10, self, None)
 		
 		self.dispatcher.subscribe(self.reset_button)
 		
@@ -91,8 +91,6 @@ class GameScene(object):
 		self.dispatcher.dispatch(event)
 		
 	def render(self, surface):
-		self.sound_button.render(surface)
-		
 		if Figure.active_figure is not None:
 			figure = Figure.active_figure
 			for obj in self.game_objects:
@@ -102,7 +100,9 @@ class GameScene(object):
 		else:
 			for obj in self.game_objects:
 				obj.render(surface)
-				
+		
+		self.sound_button.render(surface)
+		
 		if self.won:
 			pygame.draw.rect(surface, (255,255,255), pygame.Rect(400 - 100, 300 - 50, 200, 100))
 			pygame.draw.rect(surface, (0,0,0), pygame.Rect(400 - 99, 300 - 49, 198, 98))

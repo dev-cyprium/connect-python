@@ -21,7 +21,8 @@ class Button(GameObject):
 		self.width = 100
 		self.height = 30
 		self.text = text
-		self.font_width = font.size(text)[0]
+		if font is not None:
+			self.font_width = font.size(text)[0]
 		self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
 		self.action = action
 		
@@ -41,9 +42,10 @@ class SoundButton(Button):
 	
 	def __init__(self, x, y, scene, action):
 		super().__init__(x, y, None, None, scene, action)
-		self.mute_image   = pygame.load('./res/mute.png')
-		self.unmute_image = pygame.load('./res/unmute.png')
+		self.mute_image   = pygame.image.load('./res/mute.png')
+		self.unmute_image = pygame.image.load('./res/unmute.png')
 		self.state = SoundButton.UNMUTED
+		# TODO: override rect for collision
 		
 	def render(self, surface):
 		if self.state == SoundButton.MUTED:
