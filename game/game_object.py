@@ -135,7 +135,7 @@ class Grid(GameObject):
 				ocupied = True
 				break
 					
-		if not ocupied and len(self.placers) == len(figure.tiles) and not self.check_collision_with_others(figure):
+		if not ocupied and len(self.placers) == len(figure.tiles):
 			figure.move_to(self.placers[0].x, self.placers[0].y)
 			for placer in self.placers:
 				placer.ocupied = True
