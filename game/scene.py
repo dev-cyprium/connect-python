@@ -144,7 +144,7 @@ class GameScene(object):
 		self.dispatcher.clear_queue()
 		self.manager.clear_queue()
 		new_scene = GameScene(self.manager, self.music_on)
-		self.manager.set_default_scene(new_scene)	
+		self.manager.set_default_scene(new_scene)
 		
 	def toggle_music(self):
 		if self.music_on:
