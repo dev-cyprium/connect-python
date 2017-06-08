@@ -34,7 +34,25 @@ class Button(GameObject):
 	def on_click(self, event):
 		if(self.rect.collidepoint(event.pos)):	
 			self.action()
-
+			
+class ResetButton(Button):
+	def __init__(self, x, y, scene, action):
+		super().__init__(x, y, None, None, scene, action)
+		self.image = pygame.image.load('./res/restart.png')
+		self.circle_position = (self.x + 30, self.y + 30)
+		self.radius = 30
+		
+	def render(self, surface):
+		surface.blit(self.image, (self.x, self.y))	
+		
+	def on_click(self, event):
+		mx = event.pos[0]
+		my = event.pos[1]
+		cx = self.x + 30
+		cy = self.y + 30
+		if (mx - cx)**2 + (my - cy)**2 < self.radius**2:
+			self.action()
+			
 class SoundButton(Button):
 	
 	MUTED = 1
