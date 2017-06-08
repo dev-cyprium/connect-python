@@ -108,9 +108,6 @@ class Grid(GameObject):
 	
 	def on_figure_release(self, figure):
 		if len(self.placers) == 0:
-			old_x = figure.pick_location[0]
-			old_y = figure.pick_location[1]
-			figure.move_to(old_x, old_y)
 			return
 						
 		ocupied = False
