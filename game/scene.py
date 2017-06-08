@@ -75,8 +75,8 @@ class GameScene(object):
 		radius = 230
 		angle = 0
 		for figure in parser.parse_figure_file():
-			x = math.cos(angle) * radius + 380
-			y = math.sin(angle) * radius + 280
+			x = figure["x"]
+			y = figure["y"]
 			angle += math.pi / 4
 			f = Figure(x, y, figure['vertecies'], figure['width'], figure['height'], self)
 			self.figures.append( f )
