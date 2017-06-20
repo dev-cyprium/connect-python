@@ -130,7 +130,10 @@ class GameScene(object):
 		self.dispatcher.clear_queue()
 		self.dispatcher.subscribe(self.reset_button)
 	
-	def reset(self):
+	def reset(self, force=False):
+		if not force:
+			if not self.won:
+				return
 		self.dispatcher.clear_queue()
 		self.manager.clear_queue()
 		new_scene = GameScene(self.manager, self.music_on)

@@ -51,7 +51,7 @@ class ResetButton(Button):
 		cx = self.x + 30
 		cy = self.y + 30
 		if (mx - cx)**2 + (my - cy)**2 < self.radius**2:
-			self.action()
+			self.action(True)
 			
 class SoundButton(Button):
 	
