@@ -123,9 +123,8 @@ class GameScene(object):
 			self.reset_button.render(surface)
 			
 	def update(self):
-		if not self.won:
-			for obj in self.game_objects:
-				obj.update()
+		for obj in self.game_objects:
+			obj.update()
 	
 	def win(self):
 		self.won = True
