@@ -1,4 +1,3 @@
-from game.utilities import Stack
 from random import randrange
 from game.game_object import Grid, Figure, Button, SoundButton, ResetButton
 from game.event_dispatcher import EventDispatcher
@@ -6,22 +5,22 @@ from game.figure_parser import FigureParser
 import pygame
 import sys
 import math
-
+		
 class GameSceneManager(object):
 	def __init__(self):
-		self._scene_stack = Stack()
+		self._scene_stack = []
 		
 	def switch_scene(self, scene):
-		self._scene_stack.push(scene)
+		self._scene_stack.append(scene)
 		
 	def active_scene(self):
-		return self._scene_stack.peek()
+		return self._scene_stack[-1]
 		
 	def set_default_scene(self, scene):
-		self._scene_stack.push(scene)
+		self._scene_stack.append(scene)
 		
 	def clear_queue(self):
-		self._scene_stack = Stack()
+		self._scene_stack = []
 
 '''
 	Scene responsible for the main game menu
