@@ -80,7 +80,7 @@ class GameScene(object):
 			x = figure["x"]
 			y = figure["y"]
 			angle += math.pi / 4
-			f = Figure(x, y, figure['vertecies'], figure['width'], figure['height'], self)
+			f = Figure(x, y, figure['vertecies'], figure['width'], figure['height'], self, figure['offset_x'])
 			self.figures.append( f )
 			self.dispatcher.subscribe( f )
 			self.game_objects.append( f )
