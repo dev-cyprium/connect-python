@@ -293,6 +293,7 @@ class Figure(GameObject):
 					self.ocupied_tiles = None
 					self.dragging = True
 					Figure.active_figure = self
+					self.pick_location = (self.tiles[0].x, self.tiles[0].y)
 				
 	def on_release(self, event):
 		figure = Figure.active_figure
