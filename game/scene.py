@@ -64,7 +64,7 @@ class GameScene(object):
 		self.font = pygame.font.SysFont('arial', 20)
 		self.reset_button = Button(350, 300, self.font, "Reset", self, self.reset )
 		self.sound_button = SoundButton(10, 10, self, self.toggle_music )
-		self.game_reset   = ResetButton(80, 10, self, self.reset_hard )
+		self.game_reset   = ResetButton(80, 10, self, self.reset )
 		
 		self.dispatcher.subscribe(self.reset_button)
 		self.dispatcher.subscribe(self.sound_button)
@@ -131,14 +131,6 @@ class GameScene(object):
 		self.dispatcher.subscribe(self.reset_button)
 	
 	def reset(self):
-		if not self.won:
-			return
-		self.dispatcher.clear_queue()
-		self.manager.clear_queue()
-		new_scene = GameScene(self.manager, self.music_on)
-		self.manager.set_default_scene(new_scene)
-	
-	def reset_hard(self):
 		self.dispatcher.clear_queue()
 		self.manager.clear_queue()
 		new_scene = GameScene(self.manager, self.music_on)
