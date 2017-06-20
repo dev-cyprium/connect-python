@@ -221,7 +221,7 @@ class Figure(GameObject):
 	
 	active_figure = None
 	
-	def __init__(self, x, y, vertecies, width, height, scene):
+	def __init__(self, x, y, vertecies, width, height, scene, offset_x=50):
 		super().__init__(x, y, scene)
 		self.color = (randrange(0,256), randrange(0,256), randrange(0,256))
 		self.original_color = self.color
@@ -237,6 +237,7 @@ class Figure(GameObject):
 		self.height = height * ClickableTile.SIZE
 		self.pick_location = (self.x, self.y)
 		self.ocupied_tiles = None
+		self.offset_x = offset_x
 		
 	def switch_color(self, color):
 		for tile in self.tiles:
@@ -260,8 +261,8 @@ class Figure(GameObject):
 			move_y = self.mouse_position[1] - current_position[1]
 			self.x -= move_x
 			self.y -= move_y
-			if self.x < 0:
-				self.x = 0
+			if self.x < 0 + self.offset_x:
+				self.x = 0 + self.offset_x
 			if self.y < 0:
 				self.y = 0
 			if self.x + self.width > 800:
